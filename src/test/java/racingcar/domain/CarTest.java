@@ -21,7 +21,7 @@ class CarTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {""})
+    @ValueSource(strings = {"","ASDFASDF","AAAAAAAAAAAA"})
     @DisplayName("자동차 생성 실패 테스트")
     void createCarFail(String name) {
         assertThatThrownBy(() -> new Car(name)).isInstanceOf(IllegalArgumentException.class);

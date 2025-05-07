@@ -21,13 +21,13 @@ public class RacingGame {
         return findWinners();
     }
 
-    private void moveCars() {
+    public void moveCars() {
         for (Car car : cars) {
             car.move(randomNumberGenerator);
         }
     }
 
-    private List<Car> findWinners() {
+    public List<Car> findWinners() {
         int maxPosition = cars.stream()
                 .mapToInt(Car::getPosition)
                 .max()
@@ -36,5 +36,9 @@ public class RacingGame {
         return cars.stream()
                 .filter(car -> car.getPosition() == maxPosition)
                 .toList();
+    }
+
+    public List<Car> getCars() {
+        return cars;
     }
 }
