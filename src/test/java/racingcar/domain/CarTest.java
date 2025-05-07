@@ -1,0 +1,61 @@
+package racingcar.domain;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import racingcar.util.RandomNumberGenerator;
+
+import static org.assertj.core.api.Assertions.*;
+
+class CarTest {
+
+    @ParameterizedTest
+    @ValueSource(strings = {"a", "benz", "bmw", "hyundai", "car21"})
+    @DisplayName("자동차 생성 테스트")
+    void createCar(String name) {
+        final Car car = new Car(name);
+
+        assertThat(car.getName()).isEqualTo(name);
+        assertThat(car.getPosition()).isEqualTo(0);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {""})
+    @DisplayName("자동차 생성 실패 테스트")
+    void createCarFail(String name) {
+        assertThatThrownBy(() -> new Car(name)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    @DisplayName("숫자가 4이상 일시 자동차 전진 테스트")
+    void carMoveTestIfNumberOverFour() {
+        RandomNumberGenerator randomNumberGenerator = () -> 4;
+        final Car car = new Car("car");
+        car.move(randomNumberGenerator);
+
+        assertThat(car.getPosition()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("숫자가 3이하 일시 자동차 정지 테스트")
+    void carMoveTestIfNumberUnderThree() {
+        RandomNumberGenerator randomNumberGenerator = () -> 3;
+        final Car car = new Car("car");
+        car.move(randomNumberGenerator);
+
+        assertThat(car.getPosition()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("자동차 이동 테스트")
+    void carMoveMultipleTimes() {
+        final Car car = new Car("test");
+
+        car.move(() -> 4);
+        car.move(() -> 3);
+        car.move(() -> 9);
+
+        assertThat(car.getPosition()).isEqualTo(2);
+    }
+}
