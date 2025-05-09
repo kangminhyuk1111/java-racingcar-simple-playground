@@ -1,40 +1,31 @@
 package racingcar.domain;
 
+import racingcar.domain.vo.Name;
+import racingcar.domain.vo.Position;
 import racingcar.util.RandomNumberGenerator;
 
 public class Car {
     private static final int MOVING_STANDARD = 4;
 
-    private final String name;
-    private int position;
+    private final Name name;
+    private Position position;
 
-    public Car(final String name) {
-        validateName(name);
+    public Car(final Name name) {
         this.name = name;
-        this.position = 0;
+        this.position = new Position();
     }
 
     public String getName() {
-        return name;
+        return name.value();
     }
 
     public int getPosition() {
-        return position;
+        return position.value();
     }
 
     public void move(final RandomNumberGenerator randomNumberGenerator) {
         if (randomNumberGenerator.generate() >= MOVING_STANDARD) {
-            position++;
-        }
-    }
-
-    private void validateName(final String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("이름은 빈 값이 작성될 수 없습니다.");
-        }
-
-        if (name.length() > 5) {
-            throw new IllegalArgumentException("이름은 5자 이하만 가능하다.");
+            position = position.forward();
         }
     }
 }

@@ -1,7 +1,11 @@
 package racingcar.controller;
 
 import racingcar.domain.Car;
+import racingcar.domain.Cars;
 import racingcar.domain.RacingGame;
+import racingcar.domain.vo.Name;
+import racingcar.domain.vo.Repetition;
+import racingcar.ui.InputView;
 import racingcar.ui.OutputView;
 import racingcar.util.RandomNumberGenerator;
 
@@ -15,24 +19,25 @@ public class RacingController {
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
-    public void playGame(List<String> carNames, int repetition) {
-        final List<Car> cars = createCars(carNames);
+    public void playGame() {
+        final Repetition repetition = new Repetition(InputView.inputRacingCount());
+        final Cars cars = createCars(InputView.inputCarNames());
 
         final RacingGame game = new RacingGame(cars, randomNumberGenerator);
 
         OutputView.printGameStart();
 
-        for (int i = 0; i < repetition; i++) {
+        for (int i = 0; i < repetition.value(); i++) {
             game.moveCars();
             OutputView.printRoundResult(game.getCars());
         }
 
-        OutputView.printWinners(game.findWinners());
+        OutputView.printWinners(game.getCars());
     }
 
-    private List<Car> createCars(List<String> carNames) {
-        return carNames.stream()
-                .map(Car::new)
-                .toList();
+    private Cars createCars(List<String> carNames) {
+        return new Cars(carNames.stream()
+                .map(name -> new Car(new Name(name)))
+                .toList());
     }
 }
