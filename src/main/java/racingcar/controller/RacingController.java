@@ -20,18 +20,34 @@ public class RacingController {
     }
 
     public void playGame() {
-        final Repetition repetition = new Repetition(InputView.inputRacingCount());
-        final Cars cars = createCars(InputView.inputCarNames());
+        final Repetition repetition = initializeRoundCount();
+        final Cars cars = initializeCars();
 
         final RacingGame game = new RacingGame(cars, randomNumberGenerator);
 
+        executeGame(game, repetition);
+
+        displayWinners(game);
+    }
+
+    private Repetition initializeRoundCount() {
+        return new Repetition(InputView.inputRacingCount());
+    }
+
+    private Cars initializeCars() {
+        return createCars(InputView.inputCarNames());
+    }
+
+    private void executeGame(final RacingGame game, final Repetition repetition) {
         OutputView.printGameStart();
 
         for (int i = 0; i < repetition.value(); i++) {
             game.moveCars();
             OutputView.printRoundResult(game.getCars());
         }
+    }
 
+    private static void displayWinners(RacingGame game) {
         OutputView.printWinners(game.getCars());
     }
 
