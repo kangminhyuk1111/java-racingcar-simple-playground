@@ -11,6 +11,10 @@ public class OutputView {
     public static final String DELIMITER = " : ";
     public static final String WINNER_JOIN_DELIMITER = ", ";
 
+    private OutputView() {
+
+    }
+
     public static void printGameStart() {
         System.out.println("\n실행 결과");
     }
