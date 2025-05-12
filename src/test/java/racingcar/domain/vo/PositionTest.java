@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import racingcar.exception.ApplicationError;
+import racingcar.exception.ApplicationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -23,7 +25,8 @@ class PositionTest {
     @DisplayName("음수로 생성 시 예외가 발생해야 한다")
     void constructorWithNegativeValueShouldThrowException(int negativeValue) {
         assertThatThrownBy(() -> new Position(negativeValue))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_POSITION_NEGATIVE.getDescription());
     }
 
     @Test

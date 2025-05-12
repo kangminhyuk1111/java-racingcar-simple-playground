@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import racingcar.domain.vo.Name;
+import racingcar.exception.ApplicationError;
+import racingcar.exception.ApplicationException;
 import racingcar.util.RandomNumberGenerator;
 
 import static org.assertj.core.api.Assertions.*;
@@ -23,10 +25,21 @@ class CarTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"","ASDFASDF","AAAAAAAAAAAA"})
+    @ValueSource(strings = {"ASDFASDF","AAAAAAAAAAAA"})
     @DisplayName("자동차 생성 실패 테스트")
-    void createCarFail(String name) {
-        assertThatThrownBy(() -> new Car(new Name(name))).isInstanceOf(IllegalArgumentException.class);
+    void createCarFailTooLong(String name) {
+        assertThatThrownBy(() -> new Car(new Name(name)))
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_NAME_TOO_LONG.getDescription());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {""," ","    "})
+    @DisplayName("자동차 생성 실패 테스트")
+    void createCarFailEmpty(String name) {
+        assertThatThrownBy(() -> new Car(new Name(name)))
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_NAME_EMPTY.getDescription());
     }
 
     @Test

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import racingcar.domain.vo.Name;
 import racingcar.domain.vo.Repetition;
 import racingcar.domain.vo.Winners;
+import racingcar.exception.ApplicationError;
+import racingcar.exception.ApplicationException;
 import racingcar.util.TestRandomNumberGenerator;
 
 import java.util.Arrays;
@@ -43,7 +45,8 @@ class RacingGameTest {
         Repetition repetition = new Repetition(2);
 
         assertThatThrownBy(() -> new Cars(Arrays.asList(car1, car2)))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.DUPLICATE_NAME.getDescription());
     }
 
     @Test

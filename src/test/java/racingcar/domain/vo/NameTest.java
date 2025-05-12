@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import racingcar.exception.ApplicationError;
+import racingcar.exception.ApplicationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +27,8 @@ class NameTest {
     @DisplayName("이름 생성 실패 테스트 - 글자수 초과")
     void createNameFailLengthOverFive(String name) {
         assertThatThrownBy(() -> new Name(name))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_NAME_TOO_LONG.getDescription());
     }
 
     @ParameterizedTest
@@ -33,14 +36,16 @@ class NameTest {
     @DisplayName("이름 생성 실패 테스트 - 빈 문자열 또는 공백 문자열")
     void createNameFailEmptyOrWhitespaceString(String name) {
         assertThatThrownBy(() -> new Name(name))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_NAME_EMPTY.getDescription());
     }
 
     @NullSource
     @DisplayName("이름 생성 실패 테스트 - null 값")
     void createNameFailNullValue(String name) {
         assertThatThrownBy(() -> new Name(name))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ApplicationException.class)
+                .hasMessage(ApplicationError.INVALID_NAME_EMPTY.getDescription());
     }
 
     @Test

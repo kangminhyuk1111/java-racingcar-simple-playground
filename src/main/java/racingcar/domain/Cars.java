@@ -1,6 +1,8 @@
 package racingcar.domain;
 
 import racingcar.domain.vo.Winners;
+import racingcar.exception.ApplicationError;
+import racingcar.exception.ApplicationException;
 import racingcar.util.RandomNumberGenerator;
 
 import java.util.List;
@@ -36,7 +38,7 @@ public record Cars(List<Car> value) {
                 .collect(Collectors.toSet());
 
         if (uniqueNames.size() < value.size()) {
-            throw new IllegalArgumentException("중복된 이름이 존재합니다.");
+            throw new ApplicationException(ApplicationError.DUPLICATE_NAME);
         }
     }
 }
